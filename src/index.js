@@ -2,38 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import firebase from 'firebase/app'
-
-var database = firebase.database();
-let room = "chat_room";
-const send = document.getElementById("send");
-const name = document.getElementById("name");
-const message = document.getElementById("message");
-const output = document.getElementById("output");
-
-//送信処理
-send.addEventListener('click', function() {
-    var now = new Date();
-    database.ref(room).push({
-        name: name.value,
-        message: message.value,
-        date: now.getFullYear() + '年' + now.getMonth()+1 + '月' + now.getDate() + '日' + now.getHours() + '時' + now.getMinutes() + '分'
-    });
-    message.value="";
-    name.value="";
-});
-
-//受信処理
-database.ref(room).on("child_added", function(data) {
-    const v = data.val();
-    const k = data.key;
-    let str = "";
-    str += '<div class="name">名前：'+v.name+'</div>';
-    str += '<div class="text">日時：'+v.date+'</div>';
-    str += '<div class="text">メッセージ：'+v.message+'</div><hr>';
-    output.innerHTML += str;
-});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -41,8 +9,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

@@ -4,11 +4,8 @@ import './App.css';
 
 function App() {
 
-  const room = "chat_room";
-
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [output, setOutput] = useState("");
 
   //name属性でstate名を判断する条件分岐　
   const handleChange = (e) => {
@@ -21,7 +18,8 @@ function App() {
 
   //送信処理
   function send() {
-    var now = new Date();
+    const room = "chat_room";
+    const now = new Date();
     db.ref(room).push({
         name: name,
         message: message,
@@ -30,17 +28,6 @@ function App() {
     setName("");
     setMessage("");
   };
-
-  //受信処理
-  db.ref(room).on("child_added", function(data) {
-      const v = data.val();
-      const k = data.key;
-      let str = "";
-      str += '<div class="name">名前：'+v.name+'</div>';
-      str += '<div class="text">日時：'+v.date+'</div>';
-      str += '<div class="text">メッセージ：'+v.message+'</div><hr>';
-      // setOutput(output + str);
-  });
 
   return (
     <div className="App">
@@ -60,16 +47,15 @@ function App() {
       </header> */}
       <h1>リアルタイムチャット</h1>
       <div>
-          <div>
-              Name<br/><input type="text" name="name" value={name} onChange={handleChange} />
-          </div>
-          <br/>
-          <div>
-              Message<br/><textarea row="10" name="message" value={message} onChange={handleChange}></textarea><br/><br/>
-              <button onClick={send}>send</button>
-          </div>
-          <hr/>
-          <div value={output} ></div>
+        <div>
+            Name<br/><input type="text" name="name" value={name} onChange={handleChange} />
+        </div>
+        <br/>
+        <div>
+            Message<br/><textarea row="10" name="message" value={message} onChange={handleChange}></textarea><br/><br/>
+            <button onClick={send}>send</button>
+        </div>
+        <hr/>
       </div>
     </div>
   );
